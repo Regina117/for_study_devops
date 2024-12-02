@@ -8,9 +8,9 @@ RUN apt-get update && apt-get install -y \
     wget \
     git && \
     apt-get clean
-RUN wget https://downloads.apache.org/tomcat/tomcat-9/v9.0.65/bin/apache-tomcat-9.0.65.tar.gz && \
-    tar xzf apache-tomcat-9.0.65.tar.gz -C /opt && \
-    ln -s /opt/apache-tomcat-9.0.65 /opt/tomcat9
+RUN wget apache-tomcat-9.0.97.tar.gz && \
+    tar xzf apache-tomcat-9.0.97.tar.gz -C /opt && \
+    ln -s /opt/apache-tomcat-9.0.97 /opt/tomcat9
 COPY path/to/local/server.xml /opt/tomcat9/conf/
 WORKDIR /home/regina
 RUN git clone https://github.com/geoserver/geoserver.git
