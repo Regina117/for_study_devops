@@ -16,4 +16,4 @@ RUN cp /home/regina/geoserver/src/web/app/target/geoserver.war /var/lib/tomcat9/
 EXPOSE 8080
 RUN chmod +x /usr/share/tomcat9/bin/*.sh 
 ENTRYPOINT /usr/share/tomcat9/bin/catalina.sh
-CMD ["catalina.sh", "run"]
+CMD ["/usr/share/tomcat9/bin/catalina.sh", "run"]
