@@ -8,15 +8,15 @@ RUN apt-get update && apt-get install -y \
     tzdata \
     git && \
     apt-get clean
+RUN wget https://downloads.apache.org/tomcat/tomcat-9/v9.0.65/bin/apache-tomcat-9.0.65.tar.gz && \
+    tar xzf apache-tomcat-9.0.65.tar.gz -C /opt && \
+    ln -s /opt/apache-tomcat-9.0.65 /opt/tomcat9
+COPY path/to/local/server.xml /opt/tomcat9/conf/
 WORKDIR /home/regina
 RUN git clone https://github.com/geoserver/geoserver.git
 WORKDIR /home/regina/geoserver/src
 RUN mvn package -DskipTests
 RUN cp /home/regina/geoserver/src/web/app/target/geoserver.war /var/lib/tomcat9/webapps/
-ENV CATALINA_PID=/var/run/tomcat9.pid
-RUN mkdir -p /usr/share/tomcat9/temp && \
-    chmod -R 777 /usr/share/tomcat9/temp
-COPY /usr/share/tomcat9/etc/server.xml /usr/share/tomcat9/conf/
 EXPOSE 8080
-RUN chmod +x /usr/share/tomcat9/bin/*.sh 
-CMD ["/usr/share/tomcat9/bin/catalina.sh", "run"]
+ENTRYPOINT ["/opt/tomcat9/bin/catalina.sh"]
+CMD ["run"]
