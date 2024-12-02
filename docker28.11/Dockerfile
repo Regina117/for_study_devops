@@ -14,6 +14,6 @@ WORKDIR /home/regina/geoserver/src
 RUN mvn package -DskipTests
 RUN cp /home/regina/geoserver/src/web/app/target/geoserver.war /var/lib/tomcat9/webapps/
 EXPOSE 8080
-RUN chmod +x /usr/share/tomcat9/bin/bin/*.sh 
+RUN chmod +x /usr/share/tomcat9/bin/*.sh 
 ENTRYPOINT /usr/share/tomcat9/bin/catalina.sh
 CMD ["catalina.sh", "run"]
