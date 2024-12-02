@@ -4,8 +4,8 @@ ENV TZ=Europe/Moscow
 RUN apt-get update && apt-get install -y \
     default-jdk \
     maven \
-    tomcat9 \
     tzdata \
+    wget \
     git && \
     apt-get clean
 RUN wget https://downloads.apache.org/tomcat/tomcat-9/v9.0.65/bin/apache-tomcat-9.0.65.tar.gz && \
