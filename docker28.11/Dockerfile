@@ -13,6 +13,7 @@ RUN git clone https://github.com/geoserver/geoserver.git
 WORKDIR /home/regina/geoserver/src
 RUN mvn package -DskipTests
 RUN cp /home/regina/geoserver/src/web/app/target/geoserver.war /var/lib/tomcat9/webapps/
+ENV CATALINA_PID=/var/run/tomcat9.pid
 EXPOSE 8080
 RUN chmod +x /usr/share/tomcat9/bin/*.sh 
 ENTRYPOINT /usr/share/tomcat9/bin/catalina.sh
