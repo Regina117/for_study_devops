@@ -16,7 +16,7 @@ RUN cp /home/regina/geoserver/src/web/app/target/geoserver.war /var/lib/tomcat9/
 ENV CATALINA_PID=/var/run/tomcat9.pid
 RUN mkdir -p /usr/share/tomcat9/temp && \
     chmod -R 777 /usr/share/tomcat9/temp
-COPY /tomcat/etc/server.xml /usr/share/tomcat9/conf/server.xml
+COPY /tomcat9/etc/server.xml /usr/share/tomcat9/conf/server.xml
 EXPOSE 8080
 RUN chmod +x /usr/share/tomcat9/bin/*.sh 
 CMD ["/usr/share/tomcat9/bin/catalina.sh", "run"]
