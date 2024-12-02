@@ -12,6 +12,6 @@ WORKDIR /home/regina
 RUN git clone https://github.com/geoserver/geoserver.git
 WORKDIR /home/regina/geoserver/src
 RUN mvn package -DskipTests
-RUN cp target/geoserver.war /var/lib/tomcat9/webapps/
+RUN cp /home/regina/geoserver/src/web/app/target/geoserver.war /var/lib/tomcat9/webapps/
 EXPOSE 8080
 CMD ["catalina.sh", "run"]
