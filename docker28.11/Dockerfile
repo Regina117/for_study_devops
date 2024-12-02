@@ -1,4 +1,6 @@
 FROM ubuntu:20.04
+ENV DEBIAN_FRONTEND=noninteractive
+ENV TZ=Europe/Moscow
 RUN apt update && apt install -y \
     default-jdk \
     maven \
