@@ -15,7 +15,7 @@ services:
              mvn clean package && \
              cp target/*.war /build/output"
     
-  prod-services:
+  prod:
     build:
       context: ./prod
       dockerfile: Dockerfile
