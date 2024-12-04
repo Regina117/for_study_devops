@@ -1,24 +1,12 @@
 version: '3.8'
 
 services:
-  builder:
-    build:
-      context: ./app
-      dockerfile: Dockerfile.build
-    # volumes:
-    #   - ./app/output:/output
-    # command: mvn clean package -DskipTests
-    networks:
-      - app-network
-
   app:
     build:
       context: ./app
       dockerfile: Dockerfile.prod
     ports:
       - "82:80"
-    depends_on:
-      - builder
     networks:
       - app-network
 
