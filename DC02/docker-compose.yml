@@ -6,14 +6,14 @@ services:
       context: ./build
       dockerfile: Dockerfile
     volumes:
-      - ./build/output:/app/output
-      - ./build/pom.xml:/app/source/pom.xml
+      - ./build/output:/build/output
+      - ./build/pom.xml:/build/source/pom.xml
     command: >
-      sh -c "rm -rf /app/source && \
-             git clone https://github.com/boxfuse/boxfuse-sample-java-war-hello.git /app/source &&
-             cd /app/source &&
+      sh -c "rm -rf /build/source && \
+             git clone https://github.com/boxfuse/boxfuse-sample-java-war-hello.git /build/source &&
+             cd /build/source &&
              mvn clean package && \
-             cp target/*.war /app/output"
+             cp target/*.war /build/output"
     
   prod-services:
     build:
