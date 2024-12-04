@@ -10,7 +10,7 @@ services:
     command: >
       sh -c "git clone https://github.com/boxfuse/boxfuse-sample-java-war-hello.git /app/source &&
              cd /app/source &&
-             ./mvn clean package &&
+             mvn clean package && \
              cp target/*.war /app/output"
     
   prod-services:
