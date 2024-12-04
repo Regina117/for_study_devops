@@ -1,10 +1,22 @@
 <settings>
-  <mirrors>
-    <mirror>
-      <id>central</id>
-      <mirrorOf>*</mirrorOf>
-      <url>https://repo.maven.apache.org/maven2</url>
-    </mirror>
-  </mirrors>
+    <profiles>
+        <profile>
+            <id>custom-repositories</id>
+            <repositories>
+                <repository>
+                    <id>osgeo</id>
+                    <url>https://download.osgeo.org/webdav/geotools/</url>
+                </repository>
+                <repository>
+                    <id>java.net</id>
+                    <url>https://maven.java.net/content/repositories/public/</url>
+                </repository>
+            </repositories>
+        </profile>
+    </profiles>
+    <activeProfiles>
+        <activeProfile>custom-repositories</activeProfile>
+    </activeProfiles>
 </settings>
+
 
