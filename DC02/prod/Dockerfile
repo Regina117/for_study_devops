@@ -4,4 +4,4 @@ RUN rm -rf /usr/local/tomcat/webapps/*
 #copy war file
 WORKDIR /var/lib/tomcat/webapps
 #copy war file
-COPY ./output/*.war ./
+COPY .build/output/*.war ./
