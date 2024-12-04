@@ -1,14 +1,10 @@
 # Use lightweight Tomcat base image
 FROM tomcat:10.1-jre17-temurin-jammy
-
 # Set working directory
 WORKDIR /usr/local/tomcat/webapps/
-
 # Copy WAR file from builder stage
 COPY ./output/app.war ./ROOT.war
-
 # Expose default Tomcat port
 EXPOSE 8080
-
 # Start Tomcat
 CMD ["catalina.sh", "run"]
