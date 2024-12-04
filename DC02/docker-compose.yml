@@ -9,7 +9,8 @@ services:
       - ./build/output:/app/output
       - ./build/pom.xml:/app/source/pom.xml
     command: >
-      sh -c "git clone https://github.com/boxfuse/boxfuse-sample-java-war-hello.git /app/source &&
+      sh -c "rm -rf /app/source && \
+             git clone https://github.com/boxfuse/boxfuse-sample-java-war-hello.git /app/source &&
              cd /app/source &&
              mvn clean package && \
              cp target/*.war /app/output"
