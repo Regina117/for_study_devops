@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  builder:
+    build:
+      context: ./build
+      dockerfile: Dockerfile
+    volumes:
+      - ./build/output:/app/output
+    command: >
+      sh -c "git clone https://github.com/boxfuse/boxfuse-sample-java-war-hello.git /app/source &&
+             cd /app/source &&
+             ./mvnw clean package &&
+             cp target/*.war /app/output"
+    
+  prod-services:
+    build:
+      context: ./prod
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    volumes:
+      - ./build/output:/var/lib/tomcat/webapps
+
