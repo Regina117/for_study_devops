@@ -3,5 +3,3 @@ FROM tomcat:10.1.13-jre17-temurin-jammy
 RUN rm -rf /usr/local/tomcat/webapps/*
 
 WORKDIR /usr/local/tomcat/webapps
-# #copy war file
-# COPY ./build/output/*.war ./
