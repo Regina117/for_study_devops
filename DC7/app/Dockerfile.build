@@ -5,7 +5,7 @@ WORKDIR /app
 # Clone the repository
 RUN git clone https://github.com/geoserver/geoserver.git /app
 # Build the application
-RUN mvn package -DskipTests
+RUN mvn -f pom.xml clean package -DskipTests
 # Copy the artifact to the output directory
 RUN mkdir -p /output && cp target/*.war /output/app.war
 
