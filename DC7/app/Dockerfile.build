@@ -8,6 +8,6 @@ WORKDIR /app/src
 # Build the application
 RUN mvn clean package -DskipTests
 # Copy the artifact to the output directory
-RUN mkdir -p /output && cp -r web/app/target/*.war /output/app.war
+RUN mkdir -p /output && cp web/app/target/*.war /output/app.war
 
 
