@@ -22,5 +22,5 @@ services:
     ports:
       - "82:80"
     volumes:
-      - ./build/output:/var/lib/tomcat/webapps
+      - ./build/output:/usr/local/tomcat/webapps
 

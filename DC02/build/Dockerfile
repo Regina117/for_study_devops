@@ -4,7 +4,7 @@ WORKDIR /build
 # copy pom.xml
 COPY pom.xml /build/source/pom.xml
 RUN rm -rf /build/source && \
-    git clone https://github.com/boxfuse/boxfuse-sample-java-war-hello.git /build/source && \
+    git clone https://github.com/boxfuse/boxfuse-sample-java-war-hello.git //source && \
     cd /build/source && \
     mvn clean package && \
     cp target/*.war /build/output
