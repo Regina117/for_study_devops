@@ -2,8 +2,9 @@
 FROM maven:3.9.5-eclipse-temurin-17 AS builder
 #use mirror for maven if access block repo.maven.apache.org
 COPY settings.xml /root/.m2/settings.xml
-RUN git clone --branch 2.25.4 https://github.com/geoserver/geoserver.git
+VOLUME ~/.m2:/root/.m2
+RUN git clone --branch 2.25.2 https://github.com/geoserver/geoserver.git
 WORKDIR /geoserver/src
 #build project exclude test
-RUN mvn package -DskipTests
+RUN mvn package -DskipTests -Dmaven.artifact.threads=1
 

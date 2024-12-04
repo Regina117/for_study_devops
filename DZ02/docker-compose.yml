@@ -16,7 +16,7 @@ services:
       dockerfile: Dockerfile.build
     volumes:
       - .:/geoserver
-    command: mvn package -DskipTests
+    command: mvn package -DskipTests -Dmaven.artifact.threads=1
     working_dir: /geoserver/src
 
 
