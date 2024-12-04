@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+    ports:
+      - "80:80"
+    depends_on:
+      - builder
+
+  builder:
+    build:
+      context: .
+      dockerfile: Dockerfile.build
+    volumes:
+      - .:/geoserver
+    command: mvn package -DskipTests
+    working_dir: /geoserver/src
+
+
