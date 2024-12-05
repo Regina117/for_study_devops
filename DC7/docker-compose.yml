@@ -7,6 +7,8 @@ services:
       dockerfile: Dockerfile.prod
     ports:
       - "82:80"
+    environment:
+      - JAVA_OPTS=-Xms512m -Xmx1024m
     networks:
       - app-network
 
