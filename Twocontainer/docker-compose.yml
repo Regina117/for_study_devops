@@ -6,9 +6,7 @@ services:
       context: .
       dockerfile: Dockerfile.build
     volumes:
-      - .:/app
-    networks:
-      - app-network
+      - ./app
 
   app:
     build:
@@ -20,11 +18,7 @@ services:
       - JAVA_OPTS=-Xms512m -Xmx1024m
     depends_on:
       - builder
-    networks:
-      - app-network
-networks:
-  app-network:
-    driver: bridge
+
 
 
 
