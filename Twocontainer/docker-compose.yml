@@ -6,7 +6,9 @@ services:
       context: .
       dockerfile: Dockerfile.prod
     ports:
-      - "80:80"
+      - "8083:8080"
+    environment:
+      - JAVA_OPTS=-Xms512m -Xmx1024m
     depends_on:
       - builder
 
