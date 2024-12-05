@@ -1,6 +1,15 @@
 version: '3.8'
 
 services:
+  builder:
+    build:
+      context: .
+      dockerfile: Dockerfile.build
+    volumes:
+      - .:/app
+    networks:
+      - app-network
+
   app:
     build:
       context: .
@@ -11,14 +20,12 @@ services:
       - JAVA_OPTS=-Xms512m -Xmx1024m
     depends_on:
       - builder
+    networks:
+      - app-network
+networks:
+  app-network:
+    driver: bridge
 
-  builder:
-    build:
-      context: .
-      dockerfile: Dockerfile.build
-    volumes:
-      - .:/geoserver
-    command: mvn package -DskipTests
-    working_dir: /geoserver/src
+
 
 

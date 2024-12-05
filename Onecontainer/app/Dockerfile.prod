@@ -8,4 +8,5 @@ RUN mvn clean package -DskipTests
 FROM tomcat:9-jre17-temurin-jammy
 WORKDIR /usr/local/tomcat/webapps/
 COPY --from=builder /app/src/web/app/target/*.war ./
+RUN rm -rf /usr/local/tomcat/work/* /usr/local/tomcat/temp/*
 CMD ["catalina.sh", "run"]
