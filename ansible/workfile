@@ -13,4 +13,4 @@ docker push reg117/geo-prod:latest
 2 - build process
 3 - prod process
 
-ansible-playbook -i playbook.yml
+ansible-playbook playbook.yml
