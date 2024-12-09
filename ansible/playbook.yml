@@ -4,8 +4,10 @@
   become: yes
   tasks:
     - name: install docker
-      ansible.builtin.shell: |
-        apt update && apt install -y docker.io
+      ansible.builtin.apt:
+        update_cache: yes
+        name: docker.io
+        state: present        
       tags: install
 
 - name: run build process
@@ -13,8 +15,7 @@
   become: yes
   tasks:
     - name: pull build image from Dockerhub
-      ansible.builtin.shell: |
-        docker pull reg117/geo-build:latest
+      ansible.builtin.shell: docker pull reg117/geo-build:latest
 
     - name: save war
       ansible.builtin.shell: |
@@ -39,4 +40,3 @@
     - name: run prod
       ansible.builtin.shell: |
         docker run -d --name=geo-container -p 8082:8080 reg117/geo-prod:latest
-
