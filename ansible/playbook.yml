@@ -1,42 +1,63 @@
 ---
-- name: setup docker
+- name: Setup Docker
   hosts: all
   become: yes
   tasks:
-    - name: install docker
+    - name: Install Docker
       ansible.builtin.apt:
         update_cache: yes
         name: docker.io
         state: present
       tags: install
 
-- name: run build process
+- name: Run build process
   hosts: build_node
   become: yes
   tasks:
-    - name: pull build image from Dockerhub
-      ansible.builtin.shell: "docker pull reg117/geo-build:latest"
-    
-    - name: save war
-      ansible.builtin.shell: |
-        docker create --name geoserver-build-container reg117/geo-build:latest
-        docker cp geoserver-build-container:/app/geoserver/src/web/app/target/*.war /tmp/geoserver.war
-        docker rm geoserver-build-container
+    - name: Pull build image from DockerHub
+      community.docker.docker_image:
+        name: reg117/geo-build
+        tag: latest
+        source: pull
 
-    - name: copy war to prod node
+    - name: Create build container to extract WAR
+      community.docker.docker_container:
+        name: geoserver-build-container
+        image: reg117/geo-build:latest
+        state: started
+
+    - name: Copy WAR file from container
+      ansible.builtin.command:
+        cmd: docker cp geoserver-build-container:/app/geoserver/src/web/app/target/*.war /tmp/geoserver.war
+
+    - name: Remove build container
+      community.docker.docker_container:
+        name: geoserver-build-container
+        state: absent
+        force_kill: true
+
+    - name: Copy WAR to production node
       ansible.builtin.copy:
         src: /tmp/geoserver.war
         dest: /tmp/geoserver.war
-      delegate_to: prod-node
+      delegate_to: prod_node
 
-- name: run prod
+- name: Run production
   hosts: prod_node
   become: yes
   tasks:
-    - name: pull prod image
-      ansible.builtin.shell: "docker pull reg117/geo-prod:latest"
+    - name: Pull production image from DockerHub
+      community.docker.docker_image:
+        name: reg117/geo-prod
+        tag: latest
+        source: pull
 
-    - name: run prod container
-      ansible.builtin.shell: |
-        docker run -d --name=geo-container -p 8082:8080 reg117/geo-prod:latest
+    - name: Run production container
+      community.docker.docker_container:
+        name: geo-container
+        image: reg117/geo-prod:latest
+        state: started
+        published_ports:
+          - "8082:8080"
+
 
