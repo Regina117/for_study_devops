@@ -1,5 +1,5 @@
 ---
-- name: setup build and prod evn
+- name: setup docker
   hosts: all
   become: yes
   tasks:
@@ -7,8 +7,10 @@
       ansible.builtin.include: |
         apt update && apt install -y docker.io
       tags: install
-- name: build project
+- name: run build process
   hosts: build_node
   become: yes
   tasks:
-    - name: create
+    - name: pull build image from Dockerhub
+      ansible.builtin.shell: |
+        docker pull 

@@ -1,0 +1,8 @@
+FROM maven:latest as build
+RUN apt update
+RUN apt install git -y
+WORKDIR /app
+RUN git clone https://github.com/geoserver/geoserver.git
+WORKDIR /app/geoserver/src
+EXPOSE 8082
+RUN mvn package
