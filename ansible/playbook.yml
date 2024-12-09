@@ -19,7 +19,7 @@
     - name: save war
       ansible.builtin.shell: |
         docker create --name geoserver-build-container reg117/geo-build:latest
-        docker cp geoserver-build-container:/app/geoserver/src/target/*.war /tmp/geoserver.war
+        docker cp geoserver-build-container:/app/geoserver/src/web/app/target/*.war /tmp/geoserver.war
         docker rm geoserver-build-container
 
     - name: copy war
