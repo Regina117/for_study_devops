@@ -4,7 +4,7 @@
   become: yes
   tasks:
     - name: Install Docker
-      ansible.builtin.apt:
+      apt:
         update_cache: yes
         name: docker.io
         state: present
@@ -15,29 +15,29 @@
   become: yes
   tasks:
     - name: Pull build image from DockerHub
-      community.docker.docker_image:
+      docker_image:
         name: reg117/geo-build
         tag: latest
         source: pull
 
     - name: Create build container to extract WAR
-      community.docker.docker_container:
+      docker_container:
         name: geoserver-build-container
         image: reg117/geo-build:latest
         state: started
 
     - name: Copy WAR file from container
-      ansible.builtin.command:
+      command:
         cmd: docker cp geoserver-build-container:/app/geoserver/src/web/app/target/*.war /tmp/geoserver.war
 
     - name: Remove build container
-      community.docker.docker_container:
+      docker_container:
         name: geoserver-build-container
         state: absent
         force_kill: true
 
     - name: Copy WAR to production node
-      ansible.builtin.copy:
+      copy:
         src: /tmp/geoserver.war
         dest: /tmp/geoserver.war
       delegate_to: prod_node
@@ -47,13 +47,13 @@
   become: yes
   tasks:
     - name: Pull production image from DockerHub
-      community.docker.docker_image:
+      docker_image:
         name: reg117/geo-prod
         tag: latest
         source: pull
 
     - name: Run production container
-      community.docker.docker_container:
+      docker_container:
         name: geo-container
         image: reg117/geo-prod:latest
         state: started
