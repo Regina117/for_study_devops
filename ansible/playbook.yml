@@ -1,0 +1,14 @@
+---
+- name: setup build and prod evn
+  hosts: all
+  become: yes
+  tasks:
+    - name: install docker
+      ansible.builtin.include: |
+        apt update && apt install -y docker.io
+      tags: install
+- name: build project
+  hosts: build_node
+  become: yes
+  tasks:
+    - name: create
