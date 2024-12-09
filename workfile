@@ -1,7 +1,0 @@
-docker login
-
-docker build -t reg117/geo-build:latest -f /home/regina/docker-compose/Dockerfile.build .
-docker push reg117/geo-build:latest
-
-docker build -t reg117/geo-prod:latest -f /home/regina/docker-compose/Dockerfile.prod .
-docker push reg117/geo-prod:latest
