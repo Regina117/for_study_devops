@@ -7,7 +7,7 @@
       ansible.builtin.apt:
         update_cache: yes
         name: docker.io
-        state: present        
+        state: present
       tags: install
 
 - name: run build process
@@ -15,15 +15,15 @@
   become: yes
   tasks:
     - name: pull build image from Dockerhub
-      ansible.builtin.shell: docker pull reg117/geo-build:latest
-
+      ansible.builtin.shell: "docker pull reg117/geo-build:latest"
+    
     - name: save war
       ansible.builtin.shell: |
         docker create --name geoserver-build-container reg117/geo-build:latest
         docker cp geoserver-build-container:/app/geoserver/src/web/app/target/*.war /tmp/geoserver.war
         docker rm geoserver-build-container
 
-    - name: copy war
+    - name: copy war to prod node
       ansible.builtin.copy:
         src: /tmp/geoserver.war
         dest: /tmp/geoserver.war
@@ -34,9 +34,9 @@
   become: yes
   tasks:
     - name: pull prod image
-      ansible.builtin.shell: |
-        docker pull reg117/geo-prod:latest
+      ansible.builtin.shell: "docker pull reg117/geo-prod:latest"
 
-    - name: run prod
+    - name: run prod container
       ansible.builtin.shell: |
         docker run -d --name=geo-container -p 8082:8080 reg117/geo-prod:latest
+
