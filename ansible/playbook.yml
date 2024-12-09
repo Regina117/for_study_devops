@@ -18,7 +18,7 @@
       docker_image:
         name: reg117/geo-build
         tag: latest
-        source: pull
+        state: present
 
     - name: Create build container to extract WAR
       docker_container:
@@ -50,7 +50,7 @@
       docker_image:
         name: reg117/geo-prod
         tag: latest
-        source: pull
+        state: present
 
     - name: Run production container
       docker_container:
