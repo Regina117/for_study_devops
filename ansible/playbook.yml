@@ -4,9 +4,10 @@
   become: yes
   tasks:
     - name: install docker
-      ansible.builtin.include: |
+      ansible.builtin.shell: |
         apt update && apt install -y docker.io
       tags: install
+
 - name: run build process
   hosts: build_node
   become: yes
@@ -14,6 +15,7 @@
     - name: pull build image from Dockerhub
       ansible.builtin.shell: |
         docker pull reg117/geo-build:latest
+
     - name: save war
       ansible.builtin.shell: |
         docker create --name geoserver-build-container reg117/geo-build:latest
@@ -25,6 +27,7 @@
         src: /tmp/geoserver.war
         dest: /tmp/geoserver.war
       delegate_to: prod-node
+
 - name: run prod
   hosts: prod_node
   become: yes
@@ -36,3 +39,4 @@
     - name: run prod
       ansible.builtin.shell: |
         docker run -d --name=geo-container -p 8082:8080 reg117/geo-prod:latest
+
