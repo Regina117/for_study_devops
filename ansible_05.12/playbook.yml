@@ -38,12 +38,6 @@
           cd /app/src && \
           mvn clean package -DskipTests"
 
-    - name: wait for end build 
-      wait_for:
-        path: /app/src/web/app/target/geoserver.war
-        state: present
-        #timeout: 600
-
     - name: Copy WAR file from container 
       command:
         cmd: docker cp geoserver-build-container:/app/src/web/app/target/geoserver.war /tmp/geoserver.war
