@@ -43,7 +43,7 @@
     - name: wait for end build 
       wait_for:
         path: /tmp/build/geoserver/src/web/app/target
-        state: directory
+        state: present
         timeout: 600
 
     - name: Copy WAR file from container
