@@ -43,16 +43,15 @@
         maven:latest mvn clean package -DskipTests
       args:
         creates: /app/src/web/app/target/geoserver.war
-
-    - name: synchronize war file to Ansible controller
-      synchronize:
-        src: /app/src/web/app/target/geoserver.war
-        dest: /tmp/geoserver.war
-        flat: yes  
+    
+    - name: copy war
+      shell: scp /app/src/web/app/target/geoserver.war ansible@{{ 158.160.150.242}}:/tmp/geoserver.war
+      delegate_to: 158.160.137.145
+      become: no 
 
 - name: Copy war to production node
   hosts: 158.160.137.145
-  become: yes
+  become: no
   tasks:
     - name: copy war to production node
       copy:
