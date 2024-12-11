@@ -36,9 +36,9 @@
           /bin/bash -c "
           apt update && \
           apt install git -y && \
-          git clone https://github.com/geoserver/geoserver.git /app/geoserver && \
-          cd /app/geoserver/src && \
-          mvn package -DskipTests"
+          git clone https://github.com/geoserver/geoserver.git /app && \
+          cd /app/src && \
+          mvn clean package -DskipTests"
 
     - name: wait for end build 
       wait_for:
