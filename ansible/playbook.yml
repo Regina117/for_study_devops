@@ -32,7 +32,7 @@
         state: started
         volumes: 
           - "/tmp/build:/app"
-        cmd: >
+        command: >
           /bin/bash -c "
           apt update && \
           apt install git -y && \
