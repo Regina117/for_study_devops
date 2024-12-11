@@ -72,7 +72,7 @@
 
     - name: app is running
       uri:
-        url: http://130.193.59.244:8082/geoserver
+        url: http://<prod_node_IP>:8082/geoserver
         status_code: 200
         validate_certs: no
       register: geo_server_status
