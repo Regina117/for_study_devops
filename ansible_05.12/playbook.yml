@@ -44,13 +44,17 @@
       args:
         creates: /app/src/web/app/target/geoserver.war
 
-    - name: use synchronize
-      synchronize:
+    - name: Copy WAR file to Ansible controller
+      fetch:
         src: /app/src/web/app/target/geoserver.war
         dest: /tmp/geoserver.war
-      delegate_to: 158.160.137.145    
+        flat: yes  
 
-    - name: Copy WAR to production node
+- name: Copy WAR to production node
+  hosts: 158.160.137.145
+  become: yes
+  tasks:
+    - name: copy war to production node
       copy:
         src: /tmp/geoserver.war
         dest: /tmp/geoserver.war
