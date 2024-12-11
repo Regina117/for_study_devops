@@ -9,22 +9,42 @@
         name: docker.io
         state: present
       tags: install
+    - name: docker service is running
+      service:
+        name: docker
+        state: started
+        enabled: yes
 
 - name: Run build process
-  hosts: build_node
+  hosts: 158.160.150.242
   become: yes
   tasks:
-    - name: Pull build image from DockerHub
+    - name: Pull maven image 
       docker_image:
-        name: reg117/geo-build
+        name: maven
         tag: latest
         state: present
 
-    - name: Create build container to extract WAR
+    - name: Create build container to WAR
       docker_container:
         name: geoserver-build-container
-        image: reg117/geo-build:latest
+        image: maven:latest
         state: started
+        volumes: 
+          - "/tmp/build:/app"
+        cmd: >
+          /bin/bash -c "
+          apt update && \
+          apt install git -y && \
+          git clone https://github.com/geoserver/geoserver.git /app/geoserver && \
+          cd /app/geoserver/src && \
+          mvn package -DskipTests"
+
+    - name: wait for end build 
+      wait_for:
+        path: /tmp/build/geoserver/src/web/app/target
+        state: directory
+        timeout: 600
 
     - name: Copy WAR file from container
       command:
@@ -34,30 +54,43 @@
       docker_container:
         name: geoserver-build-container
         state: absent
-        force_kill: true
+        force_kill: yes
 
     - name: Copy WAR to production node
       copy:
         src: /tmp/geoserver.war
         dest: /tmp/geoserver.war
-      delegate_to: prod_node
+      delegate_to: 158.160.137.145
 
 - name: Run production
-  hosts: prod_node
+  hosts: 158.160.137.145
   become: yes
   tasks:
-    - name: Pull production image from DockerHub
+    - name: Pull tomcat image 
       docker_image:
-        name: reg117/geo-prod
+        name: tomcat
         tag: latest
         state: present
 
     - name: Run production container
       docker_container:
         name: geo-container
-        image: reg117/geo-prod:latest
+        image: tomcat:latest
         state: started
+        volumes:
+          - "/tmp/geoserver.war:/usr/local/tomcat/webapps/geoserver.war"
         published_ports:
           - "8082:8080"
+
+    - name: app is running
+      uri:
+        url: http://130.193.59.244:8082/geoserver
+        status_code: 200
+        validate_certs: no
+      register: geo_server_status
+
+    - name: debug app status
+      debug:
+        var: geo_server_status
 
 

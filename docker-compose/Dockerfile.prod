@@ -1,6 +1,3 @@
-# use myimage from dockerhub
-FROM reg117/geo-build:latest AS build
-
 FROM tomcat:latest
 WORKDIR /usr/local/tomcat/webapps/
 COPY --from=build /app/geoserver/src/web/app/target/*.war ./
