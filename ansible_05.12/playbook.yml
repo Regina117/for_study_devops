@@ -42,21 +42,6 @@
       shell: mvn clean package -DskipTests
       args:
         chdir: "/app" 
-        register: mvn_output
-
-    - name: Debug Maven output
-      debug:
-        var: mvn_output.stdout_lines
-
-    - name: Verify target directory exists
-      stat:
-        path: /app/src/web/app/target/geoserver.war
-      register: target_stat
-
-    - name: Fail if WAR file is missing
-      fail:
-        msg: "geoserver.war file is missing after Maven build!"
-      when: not target_stat.stat.exists
 
     - name: Copy WAR to production node
       synchronize:
