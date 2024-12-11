@@ -29,7 +29,7 @@
       docker_container:
         name: geoserver-build-container
         image: maven:latest
-        state: always
+        state: started
         detach: true
         command: >
           /bin/bash -c "
@@ -38,6 +38,10 @@
           git clone https://github.com/geoserver/geoserver.git /app && \
           cd /app/src && \
           mvn clean package -DskipTests"
+
+    - name: Wait for WAR build to complete
+      pause:
+        minutes: 10      
 
     - name: Copy WAR file from container 
       command:
