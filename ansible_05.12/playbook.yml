@@ -39,9 +39,20 @@
           cd /app/src && \
           mvn clean package -DskipTests"
 
-    - name: Wait for WAR build to complete
-      pause:
-        minutes: 10      
+    - name: Fetch logs from build container
+      command:
+        cmd: docker logs geoserver-build-container
+      register: build_logs
+
+    - name: Debug build logs
+      debug:
+        var: build_logs.stdout
+
+    - name: Check WAR file exists in container
+      command:
+        cmd: docker exec geoserver-build-container ls /app/src/web/app/target/geoserver.war
+      register: war_check
+      failed_when: "'No such file or directory' in war_check.stderr"   
 
     - name: Copy WAR file from container 
       command:
