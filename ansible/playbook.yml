@@ -42,13 +42,13 @@
 
     - name: wait for end build 
       wait_for:
-        path: /tmp/build/geoserver/src/web/app/target
+        path: /tmp/build/src/web/app/target
         state: present
-        timeout: 600
+        #timeout: 600
 
     - name: Copy WAR file from container
       command:
-        cmd: docker cp geoserver-build-container:/app/geoserver/src/web/app/target/*.war /tmp/geoserver.war
+        cmd: docker cp geoserver-build-container:/app/src/web/app/target/*.war /tmp/geoserver.war
 
     - name: Remove build container
       docker_container:
