@@ -19,7 +19,7 @@
         enabled: yes
 
 - name: Run build process
-  hosts: 158.160.137.145
+  hosts: 158.160.150.242
   become: yes
   tasks:
     - name: git clone repository
@@ -48,10 +48,10 @@
       copy:
         src: /app/src/web/app/target/geoserver.war
         dest: /tmp/geoserver.war
-      delegate_to: 158.160.150.242
+      delegate_to: 158.160.137.145
 
 - name: Run production
-  hosts: 158.160.150.242
+  hosts: 158.160.137.145
   become: yes
   tasks:
     - name: Pull tomcat image 
@@ -72,7 +72,7 @@
 
     - name: app is running
       uri:
-        url: http://158.160.150.242:8082/geoserver
+        url: http://158.160.137.145:8082/geoserver
         status_code: 200
         validate_certs: no
       register: geo_server_status
