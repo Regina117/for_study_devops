@@ -25,55 +25,39 @@
         tag: latest
         state: present
 
-    - name: Create build container to WAR
-      docker_container:
-        name: geoserver-build-container
-        image: maven:latest
-        state: started
-        detach: true
-        command: >
-          /bin/bash -c "
-          apt update && \
-          apt install git -y && \
-          git clone https://github.com/geoserver/geoserver.git /app && \
-          cd /app/src && \
-          mvn clean package -DskipTests"
+    - name: git clone
+      git: 
+        repo: https://github.com/geoserver/geoserver.git
+        dest: /app/
+        clone: yes
+        update: yes
 
-    - name: Fetch logs from build container
-      command:
-        cmd: docker logs geoserver-build-container
-      register: build_logs
+    - name: ensure mvn package
+      apt:
+        name: maven
+        state: present           
 
-    - name: Debug build logs
-      debug:
-        var: build_logs.stdout
 
-    - name: Check WAR file exists in container
-      command:
-        cmd: docker exec geoserver-build-container ls /app/src/web/app/target/geoserver.war
-      register: war_check
-      failed_when: "'No such file or directory' in war_check.stderr"   
-
-    - name: Copy WAR file from container 
-      command:
-        cmd: docker cp geoserver-build-container:/app/src/web/app/target/geoserver.war /tmp/geoserver.war
-
-    - name: Remove build container
-      docker_container:
-        name: geoserver-build-container
-        state: absent
-        force_kill: yes
+    - name: Create build to WAR
+      shell: mvn clean package -DskipTests
+      args:
+        chdir: "/app" 
 
     - name: Copy WAR to production node
-      copy:
-        src: /tmp/geoserver.war
+      synchronize:
+        src: /app/src/web/app/target/geoserver.war
         dest: /tmp/geoserver.war
+        mode: push
       delegate_to: prod_node
 
 - name: Run production
   hosts: prod_node
   become: yes
   tasks:
+    - name: Ensure Java is installed
+      apt:
+        name: openjdk-11-jdk
+        state: present
     - name: Pull tomcat image 
       docker_image:
         name: tomcat
@@ -97,8 +81,5 @@
         validate_certs: no
       register: geo_server_status
 
-    - name: debug app status
-      debug:
-        var: geo_server_status
 
 
