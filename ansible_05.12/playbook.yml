@@ -16,7 +16,7 @@
         enabled: yes
 
 - name: Run build process
-  hosts: 158.160.150.242
+  hosts: build_node
   become: yes
   tasks:
     - name: Pull maven image 
@@ -29,7 +29,8 @@
       docker_container:
         name: geoserver-build-container
         image: maven:latest
-        state: started
+        state: always
+        detach: true
         command: >
           /bin/bash -c "
           apt update && \
@@ -52,10 +53,10 @@
       copy:
         src: /tmp/geoserver.war
         dest: /tmp/geoserver.war
-      delegate_to: 158.160.137.145
+      delegate_to: prod_node
 
 - name: Run production
-  hosts: 158.160.137.145
+  hosts: prod_node
   become: yes
   tasks:
     - name: Pull tomcat image 
