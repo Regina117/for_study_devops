@@ -59,18 +59,14 @@
           name: tomcat
           tag: latest
           state: present
-
-      - name: Build custom tomcat image with geoserver
-        docker_image:
-          path: /tmp
-          name: tomcat-geoserver
-          tag: latest    
-     
+  
       - name: Deploy war file and start container
         docker_container:
           name: geo-container
-          image: tomcat-geoserver:latest
+          image: tomcat
           state: started
+          volumes:
+            - "/tmp/geoserver.war:/usr/local/tomcat/webapps/geoserver.war"
           published_ports:
             - "8080:8080"
   
