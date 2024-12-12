@@ -46,6 +46,13 @@
             working_dir: /app/src
             state: started
             detach: false
+        when: 
+          - not war_file_exists.stat.exists
+
+      - name: Check if WAR file exists
+        stat:
+            path: /app/src/web/app/target/geoserver.war
+        register: war_file_exists
   
       - name: Copy war file to production node
         fetch:
