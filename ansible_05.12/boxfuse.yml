@@ -38,7 +38,7 @@
       - name: build war
         shell: mvn package -e
         args:
-          chdir: "/app"
+          chdir: "/app/src"
   
       - name: Copy war file to production node
         fetch:
