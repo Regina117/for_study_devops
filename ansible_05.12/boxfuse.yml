@@ -25,7 +25,7 @@
       - name: git clone repository
         git: 
           repo: https://github.com/boxfuse/boxfuse-sample-java-war-hello
-          dest: /app
+          dest: /app/src
           clone: yes
           update: yes  
       - name: Verify if repository is cloned correctly
@@ -37,14 +37,14 @@
         shell: |
           docker run --rm \
           -v /app:/app \
-          -w /app/boxfuse-sample-java-war-hello \
+          -w /app/src \
           maven:latest mvn package
         args:
-          creates: /app/boxfuse-sample-java-war-hello/target/hello-1.0.war
+          creates: /app/src/target/hello-1.0.war
   
       - name: Copy war file to production node
         fetch:
-          src: /app/boxfuse-sample-java-war-hello/target/hello-1.0.war
+          src: /app/src/target/hello-1.0.war
           dest: /tmp/
           flat: yes
   
