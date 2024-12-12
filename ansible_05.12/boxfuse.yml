@@ -29,16 +29,15 @@
           clone: yes
           update: yes  
       - name: Verify if repository is cloned correctly
-        shell: ls -l /app
+        shell: ls -l /app/src
         register: repo_files
         changed_when: false
   
       - name: build war file using maven in docker
         shell: |
           docker run --rm \
-          -v /app:/app \
           -w /app/src \
-          maven:latest mvn package
+          maven:latest mvn clean package -DskipTests -X
         args:
           creates: /app/src/target/hello-1.0.war
   
