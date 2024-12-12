@@ -1,0 +1,88 @@
+---
+  - name: Setup Docker
+    hosts: all
+    become: yes
+    tasks:
+      - name: Install packages
+        apt:
+          update_cache: yes
+          name: 
+            - git
+            - docker.io
+            - openjdk-11-jdk
+          state: present
+  
+      - name: Ensure Docker service is running
+        service:
+          name: docker
+          state: started
+          enabled: yes
+  
+  - name: Run build process
+    hosts: 158.160.134.101
+    become: yes
+    tasks:
+      - name: git clone repository
+        git: 
+          repo: https://github.com/boxfuse/boxfuse-sample-java-war-hello
+          dest: /app
+          clone: yes
+          update: yes  
+  
+      - name: pull maven image
+        docker_image:
+          name: maven
+          tag: latest
+          state: present 
+  
+      - name: build war file using maven in docker
+        shell: |
+          docker run --rm \
+          -v /app:/app \
+          -w /app/ \
+          maven:latest mvn clean package -DskipTests
+        args:
+          creates: /app/target/hello-1.0.war
+  
+      - name: Copy war file to production node
+        fetch:
+          src: /app/target/hello-1.0.war
+          dest: /tmp/
+          flat: yes
+  
+  - name: Run production environment
+    hosts: 51.250.38.179
+    become: yes
+    tasks:
+      - name: apt package
+        apt:
+          name: tomcat9
+          state: present
+          
+      - name: copy war file in prod
+        copy: 
+          src: /tmp/hello-1.0.war
+          dest: /var/lib/tomcat9/webapps
+        become: yes
+  
+      - name: tomcat started
+        service:
+          name: tomcat9
+          state: started
+          enabled: yes
+    
+  
+      - name: Verify application is running
+        uri:
+          url: http://51.250.38.179:8082/
+          status_code: 200
+          validate_certs: no
+        register: geo_server_status
+  
+      - name: Debug application status
+        debug:
+          var: geo_server_status
+  
+
+
+
