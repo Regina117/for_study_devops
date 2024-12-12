@@ -66,7 +66,9 @@
           mode: '0644'
 
       - name: Compress WAR file before fetching
-        command: tar -czf /app/src/web/app/target/geoserver.tar.gz -C /app/src/web/app/target geoserver.war
+        archive: 
+          path: /app/src/web/app/target/geoserver.war
+          dest: /app/src/web/app/target/geoserver.tar.gz
   
       - name: Copy war file to production node
         fetch:
@@ -90,7 +92,10 @@
         become: yes
 
       - name: Extract WAR file on production server
-        command: tar -xzf /var/lib/tomcat9/webapps/geoserver.tar.gz -C /var/lib/tomcat9/webapps
+        unarchive: 
+          src: /var/lib/tomcat9/webapps/geoserver.tar.gz
+          dest: /var/lib/tomcat9/webapps
+          remote_src: yes
         args:
           removes: /var/lib/tomcat9/webapps/geoserver.tar.gz  
   
