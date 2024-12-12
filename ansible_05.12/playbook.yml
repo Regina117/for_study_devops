@@ -66,7 +66,7 @@
           image: tomcat:latest
           state: started
           volumes:
-            - "/tmp/geoserver.war:/usr/local/tomcat/webapps/geoserver.war"
+            - "/tmp/geoserver.war:/app/src/web/app/target/geoserver.war"
           published_ports:
             - "8080:8080"
   
