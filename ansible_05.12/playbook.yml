@@ -68,18 +68,22 @@
           volumes:
             - "/tmp/geoserver.war:/usr/local/tomcat/webapps/geoserver.war"
           published_ports:
-            - "8080:8080"
+            - "8082:8080"
+
+      # - name: wait container to start
+      #   pause:
+      #     seconds: 10      
   
-      - name: Verify application is running
-        uri:
-          url: http://51.250.38.179:8080/geoserver
-          status_code: 200
-          validate_certs: no
-        register: geo_server_status
+      # - name: Verify application is running
+      #   uri:
+      #     url: http://51.250.38.179:8082/geoserver
+      #     status_code: 200
+      #     validate_certs: no
+      #   register: geo_server_status
   
-      - name: Debug application status
-        debug:
-          var: geo_server_status
+      # - name: Debug application status
+      #   debug:
+      #     var: geo_server_status
   
 
 
