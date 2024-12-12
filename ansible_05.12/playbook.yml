@@ -95,9 +95,12 @@
         unarchive: 
           src: /var/lib/tomcat9/webapps/geoserver.tar.gz
           dest: /var/lib/tomcat9/webapps
-          remote_src: yes
-        args:
-          removes: /var/lib/tomcat9/webapps/geoserver.tar.gz  
+          remote_src: yes 
+
+      - name: Remove the tar file after extraction
+        file:
+          path: /var/lib/tomcat9/webapps/geoserver.tar.gz
+          state: absent
   
       - name: tomcat started
         service:
