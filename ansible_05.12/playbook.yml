@@ -68,11 +68,11 @@
           volumes:
             - "/tmp/geoserver.war:/usr/local/tomcat/webapps/geoserver.war"
           published_ports:
-            - "8082:8080"
+            - "8080:8080"
   
       - name: Verify application is running
         uri:
-          url: http://158.160.136.248:8082/geoserver
+          url: http://51.250.38.179:8082/geoserver
           status_code: 200
           validate_certs: no
         register: geo_server_status

@@ -25,3 +25,5 @@ ls -l /app/src/web/app/target/geoserver.war
 build
 docker run --rm -v /app:/app -w /app/src maven:latest mvn clean package -DskipTests
 
+2. slave2
+docker exec -it geo-container bash
