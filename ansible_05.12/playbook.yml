@@ -28,7 +28,7 @@
           dest: /app
           clone: yes
           update: yes  
-          force: no
+          force: yes
   
       - name: pull maven image
         docker_image:
