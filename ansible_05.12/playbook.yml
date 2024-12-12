@@ -61,8 +61,8 @@
       - name: Ensure correct permissions for the WAR file
         file:
           path: /app/src/web/app/target/geoserver.war
-          owner: tomcat
-          group: tomcat
+          owner: root
+          group: root
           mode: '0644'
       
   
