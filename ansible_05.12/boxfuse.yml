@@ -41,7 +41,7 @@
   
       - name: Copy war file to production node
         fetch:
-          src: /app/src/target/hello-1.0.war
+          src: /app/target/hello-1.0.war
           dest: /tmp/
           flat: yes
   
