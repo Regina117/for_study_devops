@@ -19,7 +19,7 @@
           enabled: yes
   
   - name: Run build process
-    hosts: 158.160.134.101
+    hosts: 158.160.155.110
     become: yes
     tasks:
       - name: git clone repository
@@ -36,7 +36,7 @@
           state: present 
   
       - name: build war file using maven in docker
-        docker_container: |
+        command: |
           docker run --rm \
           -v /app:/app \
           -w /app/src \
@@ -51,7 +51,7 @@
           flat: yes
   
   - name: Run production environment
-    hosts: 51.250.38.179
+    hosts: 158.160.153.75
     become: yes
     tasks:
       - name: apt package
@@ -74,7 +74,7 @@
   
       - name: Verify application is running
         uri:
-          url: http://51.250.38.179:8082/geoserver
+          url: http://158.160.153.75:8082/geoserver
           status_code: 200
           validate_certs: no
         register: geo_server_status
