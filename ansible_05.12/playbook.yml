@@ -43,18 +43,12 @@
           maven:latest mvn clean package -DskipTests
         args:
           creates: /app/src/web/app/target/geoserver.war
-
-      - name: Debug file path on source
-        stat:
-          path: /app/src/web/app/target/geoserver.war
-        delegate_to: 158.160.134.101    
   
       - name: Copy war file to production node
-        copy:
+        fetch:
           src: /app/src/web/app/target/geoserver.war
-          dest: /tmp/geoserver.war
-        become: yes
-        delegate_to: 51.250.38.179
+          dest: /tmp/
+          flat: yes
   
   - name: Run production environment
     hosts: 51.250.38.179
