@@ -63,7 +63,7 @@
       - name: Deploy war file and start container
         docker_container:
           name: geo-container
-          image: tomcat:latest
+          image: tomcat:9.0
           state: started
           volumes:
             - "/tmp/geoserver.war:/usr/local/tomcat/webapps/geoserver.war"
