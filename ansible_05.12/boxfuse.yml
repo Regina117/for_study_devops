@@ -32,29 +32,19 @@
         shell: ls -l /app
         register: repo_files
         changed_when: false
-
-      - name: Debug repository files
-        debug:
-        var: repo_files.stdout    
-  
-      - name: pull maven image
-        docker_image:
-          name: maven
-          tag: latest
-          state: present 
   
       - name: build war file using maven in docker
         shell: |
           docker run --rm \
           -v /app:/app \
-          -w /app/ \
+          -w /app/boxfuse-sample-java-war-hello \
           maven:latest mvn package
         args:
-          creates: /app/target/hello-1.0.war
+          creates: /app/boxfuse-sample-java-war-hello/target/hello-1.0.war
   
       - name: Copy war file to production node
         fetch:
-          src: /app/target/hello-1.0.war
+          src: /app/boxfuse-sample-java-war-hello/target/hello-1.0.war
           dest: /tmp/
           flat: yes
   
