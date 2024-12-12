@@ -28,6 +28,7 @@
           dest: /app/
           clone: yes
           update: yes 
+          force: yes
 
       - name: maven package
         apt:
