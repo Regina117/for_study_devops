@@ -44,15 +44,19 @@
         args:
           creates: /app/src/web/app/target/geoserver.war
   
-      # - name: copy war file to production node
-      #   shell: scp /app/src/web/app/target/geoserver.war root@51.250.38.179:/tmp/geoserver.war
-      #   delegate_to: 158.160.134.101
-      #   become: yes
-      - name: Copy war file to production node
-        copy:
+      - name: Copy war file to local controller
+        fetch:
           src: /app/src/web/app/target/geoserver.war
           dest: /tmp/geoserver.war
+          flat: yes
+        delegate_to: 158.160.134.101
+
+      - name: Copy war file from local controller to production node
+        copy:
+          src: /tmp/geoserver.war
+          dest: /tmp/geoserver.war
         delegate_to: 51.250.38.179
+
   
   - name: Run production environment
     hosts: 51.250.38.179

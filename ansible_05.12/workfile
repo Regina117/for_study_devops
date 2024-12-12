@@ -14,3 +14,14 @@ docker push reg117/geo-prod:latest
 3 - prod process
 
 ansible-playbook playbook.yml
+mistake discribe
+ansible-playbook playbook.yml -vvv
+
+
+
+check command:
+1. slave1
+ls -l /app/src/web/app/target/geoserver.war
+build
+docker run --rm -v /app:/app -w /app/src maven:latest mvn clean package -DskipTests
+
