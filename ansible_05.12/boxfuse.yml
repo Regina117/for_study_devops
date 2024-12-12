@@ -36,7 +36,7 @@
           state: present    
   
       - name: build war
-        shell: mvn package 
+        shell: mvn package -e
         args:
           chdir: "/app"
   
