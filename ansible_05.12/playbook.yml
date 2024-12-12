@@ -36,7 +36,7 @@
           state: present 
   
       - name: build war file using maven in docker
-        shell: |
+        docker_container: |
           docker run --rm \
           -v /app:/app \
           -w /app/src \
