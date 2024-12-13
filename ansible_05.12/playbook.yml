@@ -29,34 +29,19 @@
           clone: yes
           update: yes  
           force: yes
-  
-      - name: pull maven image
-        docker_image:
+
+      - name: maven package
+        apt:
           name: maven
-          tag: latest
-          state: present 
-
-      - name: Check if WAR file exists
-        stat:
-            path: /app/src/web/app/target/geoserver.war
-        register: war_file_exists
-
-      - name: Debug WAR file existence
-        debug:
-          var: war_file_exists.stat.exists
+          state: present    
   
-      - name: Build WAR file using Maven
-        docker_container:
-            name: maven_build
-            image: maven:latest
-            command: mvn clean package -DskipTests
-            volumes:
-              - /app:/app
-            working_dir: /app/src
-            state: started
-            detach: false
-        when: 
-          - not war_file_exists.stat.exists    
+      - name: build war
+        shell: mvn clean package -DskipTests
+        volumes:
+            - /app:/app
+        working_dir: /app/src
+        state: started
+        detach: false  
 
       - name: Ensure correct permissions for the WAR file
         file:
