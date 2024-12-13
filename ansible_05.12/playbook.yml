@@ -81,7 +81,7 @@
         copy: 
           src: /tmp/geoserver.war
           dest: /var/lib/tomcat9/webapps/geoserver.war
-          
+          remote_src: yes
         
       - name: tomcat started
         service:
