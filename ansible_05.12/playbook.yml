@@ -77,7 +77,7 @@
       - name: copy war file in prod
         copy: 
           src: /tmp/geoserver.war
-        dest: /var/lib/tomcat9/webapps/geoserver.war
+          dest: /var/lib/tomcat9/webapps/geoserver.war
         
       - name: tomcat started
         service:
