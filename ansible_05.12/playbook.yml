@@ -44,15 +44,20 @@
 
       - name: Debug Maven output
         debug: 
-          var: build_output.stdout_lines 
+          var: build_output
+
+      - name: Check if WAR file exists
+        stat:
+          path: /app/src/web/app/target/geoserver.war
+        register: war_file_stat    
 
       - name: Ensure correct permissions for the WAR file
         file:
           path: /app/src/web/app/target/geoserver.war
           owner: root
           group: root
-          mode: '0644'
-        when: "'BUILD SUCCESS' in build_output.stdout"  
+          mode: '0644'      
+        when: war_file_stat.stat.exists   
   
       - name: Copy war file to production node
         fetch:
