@@ -16,6 +16,8 @@ docker push reg117/geo-prod:latest
 ansible-playbook playbook.yml
 mistake discribe
 ansible-playbook playbook.yml -vvv
+ansible-playbook playbook.yml --check -v
+
 
 
 

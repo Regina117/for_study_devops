@@ -39,6 +39,12 @@
         shell: mvn clean package -DskipTests
         args:
           chdir: /app/src 
+        register: build_output
+        ignore_errors: yes
+
+      - name: Debug Maven output
+        debug: 
+          var: build_output.stdout_lines 
 
       - name: Ensure correct permissions for the WAR file
         file:
@@ -46,6 +52,7 @@
           owner: root
           group: root
           mode: '0644'
+        when: "'BUILD SUCCESS' in build_output.stdout"  
   
       - name: Copy war file to production node
         fetch:
