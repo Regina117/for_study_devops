@@ -37,9 +37,7 @@
   
       - name: build war
         shell: mvn clean package -DskipTests
-        volumes:
-            - /app:/app
-        working_dir: /app/src
+        working_dir: /app
         state: started
         detach: false  
 
