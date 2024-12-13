@@ -64,6 +64,7 @@
           src: /app/src/web/app/target/geoserver.war
           dest: /tmp/
           flat: yes
+        become: yes  
   
   - name: Run production environment
     hosts: 158.160.134.42
@@ -78,6 +79,7 @@
         copy: 
           src: /tmp/geoserver.war
           dest: /var/lib/tomcat9/webapps/geoserver.war
+          
         
       - name: tomcat started
         service:
