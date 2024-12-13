@@ -60,11 +60,13 @@
         when: war_file_stat.stat.exists   
   
       - name: Copy war file to production node
-        fetch:
+        copy:
           src: /app/src/web/app/target/geoserver.war
-          dest: /tmp/
-          flat: yes
+          dest: /tmp/geoserver.war
+          remote_src: yes
+          mode: '0644'
         become: yes  
+        delegate_to: 158.160.134.42
   
   - name: Run production environment
     hosts: 158.160.134.42
