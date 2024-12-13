@@ -36,7 +36,7 @@
           state: present    
   
       - name: build war
-        command: mvn clean package -DskipTests
+        shell: mvn clean package -DskipTests
         args:
           chdir: /app/src 
 
