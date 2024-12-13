@@ -36,10 +36,9 @@
           state: present    
   
       - name: build war
-        shell: mvn clean package -DskipTests
-        working_dir: /app
-        state: started
-        detach: false  
+        command: mvn clean package -DskipTests
+        args:
+          chdir: /app/src 
 
       - name: Ensure correct permissions for the WAR file
         file:
