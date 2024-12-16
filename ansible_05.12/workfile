@@ -29,5 +29,8 @@ docker run --rm -v /app:/app -w /app/src maven:latest mvn clean package -DskipTe
 
 2. slave2
 docker exec -it geo-container bash
-curl http://localhost:8080/geoserver
+curl -I http://localhost:8080/geoserver
 
+
+для ролей 
+ansible-playbook -i inventory.yml site.yml -vvv
