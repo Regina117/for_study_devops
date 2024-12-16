@@ -1,0 +1,54 @@
+---
+# tasks file for common
+- name: Install required packages
+  apt:
+    update_cache: yes
+    name:
+      - git
+      - docker.io
+      - openjdk-11-jdk
+      - maven
+    state: present
+
+- name: Ensure Docker is running
+  service:
+    name: docker
+    state: started
+    enabled: yes
+
+- name: Clone repository
+  git:
+    repo: https://github.com/geoserver/geoserver.git
+    dest: /app
+    clone: yes
+    update: yes
+    force: yes
+
+- name: Build WAR file
+  shell: mvn clean package -DskipTests
+  args:
+    chdir: /app/src
+  register: build_output
+
+- name: Debug build output
+  debug:
+    var: build_output
+
+- name: Check if WAR file exists
+  stat:
+    path: /app/src/web/app/target/geoserver.war
+  register: war_file_stat
+
+- name: Ensure correct permissions for WAR file
+  file:
+    path: /app/src/web/app/target/geoserver.war
+    owner: root
+    group: root
+    mode: '0644'
+  when: war_file_stat.stat.exists
+
+- name: Copy WAR file to production node
+  copy:
+    src: /app/src/web/app/target/geoserver.war
+    dest: /tmp/geoserver.war
+  delegate_to: "{{ prod_node_ip }}"

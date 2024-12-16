@@ -19,7 +19,7 @@
           enabled: yes
   
   - name: Run build process
-    hosts: 158.160.149.247
+    hosts: 158.160.151.201
     become: yes
     tasks:
       - name: git clone repository
@@ -66,10 +66,10 @@
           remote_src: yes
           mode: '0644'
         become: yes  
-        delegate_to: 158.160.134.42
+        delegate_to: 158.160.157.95
   
   - name: Run production environment
-    hosts: 158.160.134.42
+    hosts: 158.160.157.95
     become: yes
     tasks:
       - name: apt package
@@ -91,7 +91,7 @@
   
       - name: Verify application is running
         uri:
-          url: http://158.160.134.42:8080/geoserver
+          url: http://158.160.157.95:8080/geoserver
           status_code: 200
           validate_certs: no
         register: geo_server_status

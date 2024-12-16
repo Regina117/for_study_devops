@@ -1,0 +1,32 @@
+---
+# tasks file for prod_node
+- name: Install required packages
+  apt:
+    update_cache: yes
+    name:
+      - tomcat9
+    state: present
+
+- name: Copy WAR file to webapps directory
+  copy:
+    src: /tmp/geoserver.war
+    dest: /var/lib/tomcat9/webapps/geoserver.war
+    remote_src: yes
+    mode: '0644'
+
+- name: Ensure Tomcat is running
+  service:
+    name: tomcat9
+    state: started
+    enabled: yes
+
+- name: Verify application is running
+  uri:
+    url: http://{{ inventory_hostname }}:8080/geoserver
+    status_code: 200
+    validate_certs: no
+  register: geo_server_status
+
+- name: Debug application status
+  debug:
+    var: geo_server_status
